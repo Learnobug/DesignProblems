@@ -9,10 +9,10 @@ void main() {
     gameSystem.joinGame(game.getId(), player2);
 
     game.startGame();
-    game.makeMove(player1, 0, 0); // Alice places X at (0,0)
-    game.makeMove(player2, 1, 1); // Bob places O at (1,1)
-    game.makeMove(player1, 0, 1); // Alice places X at (0,1)
-    game.makeMove(player2, 2, 2); // Bob places O at (2,2)
+    game.makeMove(player1, 0, 0);
+    game.makeMove(player2, 1, 1);
+    game.makeMove(player1, 0, 1);
+    game.makeMove(player2, 2, 2);
     game.makeMove(player1, 1, 2);
     game.makeMove(player2,2,1);
     game.makeMove(player1, 1, 0);
