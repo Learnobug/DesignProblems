@@ -3,11 +3,13 @@ import java.util.List;
 public class ElevatorController {
     List<Elevator> elevators = new java.util.ArrayList<>();
     List<Floor> floors = new java.util.ArrayList<>();
+    SchedulingStrategy schedulingStrategy;
 
-    public ElevatorController(int totalfloors) {
+    public ElevatorController(int totalfloors, SchedulingStrategy strategy) {
         for(int i=0;i<totalfloors;i++){
             floors.add(new Floor(i));
         }
+        this.schedulingStrategy = strategy;
     }
 
     Elevator getElevator(){
@@ -19,4 +21,16 @@ public class ElevatorController {
         elevators.add(elevator);
     }
 
+    public void step() {
+
+            Elevator elevator = getElevator();
+            if (!elevator.getRequests().isEmpty()) {
+
+                int nextStop = schedulingStrategy.nextFloor(elevator);
+
+                if (elevator.getCurrentfloor() != nextStop)
+                    elevator.moveToNextfloor(nextStop);
+            }
+
+    }
 }

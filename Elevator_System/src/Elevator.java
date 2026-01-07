@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
 public class Elevator {
     int uniqid;
     int currentfloor;
-    int targetfloor;
+
     Direction direction;
     State state;
     int capacity;
@@ -15,7 +16,7 @@ public class Elevator {
     Elevator( int capacity, SchedulingStrategy schedulingStrategy) {
         this.uniqid = Math.toIntExact(Math.round(Math.random() * 100));
         this.currentfloor = 0;
-        this.targetfloor = 0;
+
         this.direction = Direction.IDLE;
         this.state = State.IDLE;
         this.capacity = capacity;
@@ -39,6 +40,11 @@ public class Elevator {
 
     public int getId() {
         return uniqid;
+    }
+
+
+    public State getState() {
+        return state;
     }
 
     public void setDirection(Direction direction) {
@@ -67,27 +73,7 @@ public class Elevator {
         return schedulingStrategy.nextFloor(this);
     }
 
-    public Request processrequest() {
-        if(requests.isEmpty()){
-            this.state = State.IDLE;
-            this.direction = Direction.IDLE;
-            return null;
-        }
-        Request processedRequest = requests.peek();
-        boolean checkstatechange = checkstatechange(processedRequest);
-        this.targetfloor = getnextFloor();
-        processedRequest.calculatewaitingtime();
-        this.currentfloor = this.targetfloor;
 
-        requests.remove(processedRequest);
-
-        if (checkstatechange) {
-            notifyforstatechange();
-        }
-        notifyforfloorchange();
-
-        return processedRequest;
-    }
 
     public void notifyforstatechange() {
         for(ElevatorObserver observer : observers){
@@ -115,5 +101,43 @@ public class Elevator {
             return true;
         }
         return false;
+    }
+
+    void moveToNextfloor(int targetfloor) {
+        if (state == State.IDLE) return;
+
+        if (this.currentfloor < targetfloor) {
+            this.currentfloor++;
+            this.direction = Direction.UP;
+        } else if (this.currentfloor > targetfloor) {
+            this.currentfloor--;
+            this.direction = Direction.DOWN;
+        }
+
+        notifyforfloorchange();
+
+        if (this.currentfloor == targetfloor) {
+            complete_request();
+        }
+    }
+
+    void complete_request() {
+        this.state = State.STOPPED;
+        requests.poll();
+        notifyforstatechange();
+
+        if (requests.isEmpty()) {
+            this.direction = Direction.IDLE;
+            this.state = State.IDLE;
+        } else {
+            this.state = State.MOVING;
+        }
+    }
+    public List<Integer> getDestinationFloors() {
+        List<Integer> floors = new ArrayList<>();
+        for (Request r : requests) {
+            floors.add(r.getTargetFloor());
+        }
+        return floors;
     }
 }

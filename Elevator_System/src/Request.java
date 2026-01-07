@@ -3,6 +3,7 @@ public abstract class Request {
     RequestState state;
     double weight;
     double waiting_time;
+    int targetfloor;
 
     Request() {
         this.state = RequestState.PENDING;
