@@ -1,0 +1,3 @@
+public enum OrderState {
+    FULFILLED, PENDING, CANCELED, RETURNED,COMPLETED
+}
