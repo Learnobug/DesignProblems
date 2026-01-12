@@ -5,7 +5,7 @@ void main() {
     Customer customer = new Customer("John Doe", "8223456789", "D1234567");
     Car car = new Car("Toyota", CarType.SUV, "Camry", "ABC123", 50.0);
     Car car1 = new Car("Honda", CarType.SIDAN, "Civic", "XYZ789", 40.0);
-    Controller controller = new Controller();
+    Controller controller = Controller.getInstance();
     controller.addnewcar(car);
     controller.addnewcar(car1);
 

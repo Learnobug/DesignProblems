@@ -51,6 +51,7 @@ public class InventoryManager {
         }
     }
 
+
     public void placeOrder(Order order) {
         Warehouse warehouse = findWarehouseWithProduct(order.getProduct(), order.getQuantity());
         if (warehouse != null) {

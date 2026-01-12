@@ -5,8 +5,15 @@ import java.util.List;
 public class Controller {
     List<Car> cars = new ArrayList<>();
     Filter filter;
+    private static Controller instance;
+    private Controller(){
+    }
 
-    public Controller(){
+    public  static Controller getInstance(){
+        if(instance == null){
+            instance = new Controller();
+        }
+        return instance;
     }
 
     public void addnewcar(Car car){
